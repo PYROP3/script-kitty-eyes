@@ -1,0 +1,28 @@
+[gd_scene load_steps=7 format=3 uid="uid://dci55jr180c4d"]
+
+[ext_resource type="Shader" uid="uid://g5m703rbgye7" path="res://eyes/bsod/bsod_eye.gdshader" id="1_ar4gi"]
+[ext_resource type="Texture2D" uid="uid://cqp3iesivtrs6" path="res://eyes/bsod/bsodmaker.png" id="1_k7i0r"]
+[ext_resource type="Shader" uid="uid://bldnmf8q3aq4m" path="res://eyes/bsod/color.gdshader" id="1_vnc6v"]
+[ext_resource type="Texture2D" uid="uid://b6ciu6nflq7q3" path="res://art/basic_eye/black.png" id="2_af0hr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yo308"]
+shader = ExtResource("1_vnc6v")
+shader_parameter/base_color = Color(0, 0.815824, 0.815824, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mpc6s"]
+shader = ExtResource("1_ar4gi")
+shader_parameter/base_color = Color(0, 0.82, 0.82, 1)
+
+[node name="Root" type="Node2D"]
+
+[node name="Black" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_yo308")
+scale = Vector2(480, 480)
+texture = ExtResource("2_af0hr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_mpc6s")
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_k7i0r")
+region_enabled = true
+region_rect = Rect2(125, 67, 1060, 1060)

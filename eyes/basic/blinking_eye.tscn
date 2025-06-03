@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfkdruh1w24ch"]
+
+[ext_resource type="Script" uid="uid://hwiyqq4rcusc" path="res://eyes/basic/blinking_eye.gd" id="1_fjccj"]
+[ext_resource type="Texture2D" uid="uid://b6ciu6nflq7q3" path="res://art/basic_eye/black.png" id="1_hmutj"]
+[ext_resource type="Texture2D" uid="uid://17nj102w7oyj" path="res://art/basic_eye/1_320.png" id="2_fjccj"]
+[ext_resource type="SpriteFrames" uid="uid://cin18o8kki3fp" path="res://art/basic_eye/basic_blink.tres" id="3_4yfta"]
+
+[node name="Root" type="Node2D"]
+script = ExtResource("1_fjccj")
+
+[node name="Background" type="Sprite2D" parent="."]
+scale = Vector2(480, 480)
+texture = ExtResource("1_hmutj")
+
+[node name="Iris" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_fjccj")
+
+[node name="AnimatedIris" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(18, 18)
+sprite_frames = ExtResource("3_4yfta")

@@ -15,6 +15,10 @@ run/main_scene="uid://b3t270b4yphdk"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[audio]
+
+driver/enable_input=true
+
 [dotnet]
 
 project/assembly_name="script-kitty-godot"
@@ -22,5 +26,3 @@ project/assembly_name="script-kitty-godot"
 [rendering]
 
 gl_compatibility/fallback_to_angle=false
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
