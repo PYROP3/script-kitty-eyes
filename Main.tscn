@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b3t270b4yphdk"]
+[gd_scene load_steps=8 format=3 uid="uid://b3t270b4yphdk"]
 
 [ext_resource type="Script" uid="uid://b457q0v6c1jhs" path="res://scripts/main.gd" id="1_glv2v"]
 [ext_resource type="PackedScene" uid="uid://dfkdruh1w24ch" path="res://eyes/basic/blinking_eye.tscn" id="2_cm0pq"]
@@ -6,10 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://mcwj2d6u3px1" path="res://eyes/spiral/spiral_eye.tscn" id="4_fos0i"]
 [ext_resource type="PackedScene" uid="uid://dv3f5lpxiht0l" path="res://eyes/hackertyper/hackertyper_eye.tscn" id="5_fos0i"]
 [ext_resource type="PackedScene" uid="uid://dci55jr180c4d" path="res://eyes/bsod/bsod_eye.tscn" id="6_3dxm6"]
+[ext_resource type="Texture2D" uid="uid://b6ciu6nflq7q3" path="res://art/basic_eye/black.png" id="7_lgr22"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_glv2v")
-swap_eyes = true
+initial_eye = ExtResource("2_cm0pq")
 key_eye_map = Dictionary[int, PackedScene]({
 69: ExtResource("4_fos0i"),
 81: ExtResource("2_cm0pq"),
@@ -18,10 +19,40 @@ key_eye_map = Dictionary[int, PackedScene]({
 87: ExtResource("3_fos0i")
 })
 mirrored_scenes = Array[PackedScene]([ExtResource("2_cm0pq"), ExtResource("4_fos0i"), ExtResource("3_fos0i")])
+movable_scenes = Array[PackedScene]([ExtResource("2_cm0pq"), ExtResource("4_fos0i"), ExtResource("3_fos0i")])
 
-[node name="LEye" type="Node2D" parent="."]
+[node name="RightWindow" type="Window" parent="."]
+handle_input_locally = false
+position = Vector2i(480, 0)
+size = Vector2i(480, 480)
+unresizable = true
+borderless = true
+unfocusable = true
+mouse_passthrough = true
+
+[node name="Black" type="Sprite2D" parent="RightWindow"]
+position = Vector2(480, 240)
+scale = Vector2(960, 480)
+texture = ExtResource("7_lgr22")
+
+[node name="REye" type="Node2D" parent="RightWindow"]
 position = Vector2(240, 240)
+rotation = -3.14159
+scale = Vector2(1, -1)
 
-[node name="REye" type="Node2D" parent="."]
-position = Vector2(720, 240)
-scale = Vector2(-1, 1)
+[node name="LeftWindow" type="Window" parent="."]
+auto_translate_mode = 1
+handle_input_locally = false
+size = Vector2i(480, 480)
+unresizable = true
+borderless = true
+unfocusable = true
+mouse_passthrough = true
+
+[node name="Black" type="Sprite2D" parent="LeftWindow"]
+position = Vector2(480, 240)
+scale = Vector2(960, 480)
+texture = ExtResource("7_lgr22")
+
+[node name="LEye" type="Node2D" parent="LeftWindow"]
+position = Vector2(240, 240)
