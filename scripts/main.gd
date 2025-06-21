@@ -49,32 +49,6 @@ func change_scene(scene: PackedScene) -> void:
 	eye_offset = Vector2()
 
 func _process(delta: float) -> void:
-	if Input.is_key_pressed(KEY_ESCAPE):
-		get_tree().quit()
-		
-	if Input.is_key_pressed(KEY_Z):
-		if !changed_eye:
-			current_index -= 1
-			while current_index < 0:
-				current_index += ordered_keys.size()
-			change_scene(key_eye_map.get(ordered_keys[current_index]))
-			changed_eye = true
-	elif Input.is_key_pressed(KEY_C):
-		if !changed_eye:
-			current_index += 1
-			current_index %= ordered_keys.size()
-			change_scene(key_eye_map.get(ordered_keys[current_index]))
-			changed_eye = true
-	else:
-		changed_eye = false
-
-		for key in key_eye_map.keys():
-			if key == last_key:
-				continue
-			if Input.is_key_pressed(key):
-				print("Key pressed: " + str(key))
-				last_key = key
-				change_scene(key_eye_map.get(key))
 				
 	eye_offset *= eye_move_dampening
 	left_eye.position = lerp(left_eye.position, left_eye_position + eye_offset, eye_move_lerp)
@@ -106,9 +80,36 @@ func handle_mouse_motion(event: InputEventMouseMotion) -> void:
 	get_viewport().warp_mouse(get_viewport().size / 2)
 
 func _input(event: InputEvent) -> void:
+	if Input.is_key_pressed(KEY_ESCAPE):
+		get_tree().quit()
+		return
+		
 	if event is InputEventMouseMotion:
 		handle_mouse_motion(event)
+		return
+	
+	if Input.is_action_just_pressed("previous_eye"):
+		current_index -= 1
+		while current_index < 0:
+			current_index += ordered_keys.size()
+		change_scene(key_eye_map.get(ordered_keys[current_index]))
+		return
 		
+	if Input.is_action_just_pressed("next_eye"):
+		current_index += 1
+		current_index %= ordered_keys.size()
+		change_scene(key_eye_map.get(ordered_keys[current_index]))
+		return
+		
+	for key in key_eye_map.keys():
+		if key == last_key:
+			continue
+		if Input.is_key_pressed(key):
+			print("Key pressed: " + str(key))
+			last_key = key
+			change_scene(key_eye_map.get(key))
+			return
+
 func _ready():
 	if swap_eyes:
 		var l_pos = left_eye.position.x
