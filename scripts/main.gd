@@ -3,7 +3,7 @@ extends Node
 @export var swap_eyes: bool = false
 @export var eye_move_factor: float = 2.
 @export var eye_move_dampening: float = 0.98
-@export var eye_move_lerp: float = 0.2
+@export var eye_move_lerp: float = 0.17
 @export var eye_move_clamp: float = 200.
 @export var test: Rect2
 
@@ -19,7 +19,12 @@ var last_key = null
 @export var mirrored_scenes: Array[PackedScene]
 @export var movable_scenes: Array[PackedScene]
 
+@onready var ordered_keys: Array[Key] = key_eye_map.keys()
+var current_index: int = 0
+
 var current_movable: bool = false
+
+var changed_eye: bool = false
 
 func clear_eyes():
 	for child in left_eye.get_children():
@@ -47,13 +52,29 @@ func _process(delta: float) -> void:
 	if Input.is_key_pressed(KEY_ESCAPE):
 		get_tree().quit()
 		
-	for key in key_eye_map.keys():
-		if key == last_key:
-			continue
-		if Input.is_key_pressed(key):
-			print("Key pressed: " + str(key))
-			last_key = key
-			change_scene(key_eye_map.get(key))
+	if Input.is_key_pressed(KEY_Z):
+		if !changed_eye:
+			current_index -= 1
+			while current_index < 0:
+				current_index += ordered_keys.size()
+			change_scene(key_eye_map.get(ordered_keys[current_index]))
+			changed_eye = true
+	elif Input.is_key_pressed(KEY_C):
+		if !changed_eye:
+			current_index += 1
+			current_index %= ordered_keys.size()
+			change_scene(key_eye_map.get(ordered_keys[current_index]))
+			changed_eye = true
+	else:
+		changed_eye = false
+
+		for key in key_eye_map.keys():
+			if key == last_key:
+				continue
+			if Input.is_key_pressed(key):
+				print("Key pressed: " + str(key))
+				last_key = key
+				change_scene(key_eye_map.get(key))
 				
 	eye_offset *= eye_move_dampening
 	left_eye.position = lerp(left_eye.position, left_eye_position + eye_offset, eye_move_lerp)
