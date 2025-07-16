@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://mvepu1w7x6m6"]
+
+[ext_resource type="Texture2D" uid="uid://b6ciu6nflq7q3" path="res://art/basic_eye/black.png" id="1_73ixa"]
+[ext_resource type="Texture2D" uid="uid://dvjqislf6v7qr" path="res://eyes/maumau/maumau_r.png" id="2_ogvyk"]
+
+[node name="MaumauL" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+scale = Vector2(480, 480)
+texture = ExtResource("1_73ixa")
+
+[node name="Iris" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(18, 18)
+texture = ExtResource("2_ogvyk")

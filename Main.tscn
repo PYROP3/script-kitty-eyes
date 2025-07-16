@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b3t270b4yphdk"]
+[gd_scene load_steps=11 format=3 uid="uid://b3t270b4yphdk"]
 
 [ext_resource type="Script" uid="uid://b457q0v6c1jhs" path="res://scripts/main.gd" id="1_glv2v"]
 [ext_resource type="PackedScene" uid="uid://dfkdruh1w24ch" path="res://eyes/basic/blinking_eye.tscn" id="2_cm0pq"]
@@ -6,7 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://mcwj2d6u3px1" path="res://eyes/spiral/spiral_eye.tscn" id="4_fos0i"]
 [ext_resource type="PackedScene" uid="uid://dv3f5lpxiht0l" path="res://eyes/hackertyper/hackertyper_eye.tscn" id="5_fos0i"]
 [ext_resource type="PackedScene" uid="uid://dci55jr180c4d" path="res://eyes/bsod/bsod_eye.tscn" id="6_3dxm6"]
+[ext_resource type="PackedScene" uid="uid://mvepu1w7x6m6" path="res://eyes/maumau/maumau_l.tscn" id="7_03owx"]
 [ext_resource type="Texture2D" uid="uid://b6ciu6nflq7q3" path="res://art/basic_eye/black.png" id="7_lgr22"]
+[ext_resource type="Script" uid="uid://bpercmjjwxu7u" path="res://scripts/WebSocketServer.gd" id="8_trn2v"]
+[ext_resource type="PackedScene" uid="uid://bojtsc7qioj4x" path="res://eyes/maumau/maumau_r.tscn" id="8_wkp8b"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_glv2v")
@@ -18,8 +21,14 @@ key_eye_map = Dictionary[int, PackedScene]({
 84: ExtResource("6_3dxm6"),
 87: ExtResource("3_fos0i")
 })
-mirrored_scenes = Array[PackedScene]([ExtResource("2_cm0pq"), ExtResource("4_fos0i"), ExtResource("3_fos0i")])
-movable_scenes = Array[PackedScene]([ExtResource("2_cm0pq"), ExtResource("4_fos0i"), ExtResource("3_fos0i")])
+key_l_eye_map = Dictionary[int, PackedScene]({
+89: ExtResource("7_03owx")
+})
+key_r_eye_map = Dictionary[int, PackedScene]({
+89: ExtResource("8_wkp8b")
+})
+mirrored_scenes = Array[PackedScene]([ExtResource("2_cm0pq"), ExtResource("4_fos0i"), ExtResource("3_fos0i"), ExtResource("7_03owx")])
+movable_scenes = Array[PackedScene]([ExtResource("2_cm0pq"), ExtResource("4_fos0i"), ExtResource("3_fos0i"), ExtResource("7_03owx")])
 
 [node name="RightWindow" type="Window" parent="."]
 handle_input_locally = false
@@ -56,3 +65,6 @@ texture = ExtResource("7_lgr22")
 
 [node name="LEye" type="Node2D" parent="LeftWindow"]
 position = Vector2(240, 240)
+
+[node name="WebSocketServer" type="Node" parent="."]
+script = ExtResource("8_trn2v")

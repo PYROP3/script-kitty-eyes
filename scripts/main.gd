@@ -15,6 +15,11 @@ extends Node
 @export var initial_eye: PackedScene
 
 @export var key_eye_map: Dictionary[Key, PackedScene]
+@export var key_l_eye_map: Dictionary[Key, PackedScene]
+@export var key_r_eye_map: Dictionary[Key, PackedScene]
+
+@onready var ALL_KEYS = key_eye_map.keys() + key_l_eye_map.keys()
+
 var last_key = null
 @export var mirrored_scenes: Array[PackedScene]
 @export var movable_scenes: Array[PackedScene]
@@ -26,6 +31,7 @@ var current_movable: bool = false
 
 var changed_eye: bool = false
 
+
 func clear_eyes():
 	for child in left_eye.get_children():
 		child.queue_free()
@@ -34,6 +40,14 @@ func clear_eyes():
 		
 var eye_offset = Vector2()
 var bounceback = false
+
+func change_scene_diff(scene_l: PackedScene, scene_r: PackedScene) -> void:
+	clear_eyes()
+	left_eye.add_child(scene_l.instantiate())
+	right_eye.add_child(scene_r.instantiate())
+	right_eye.scale.x = -1.
+	current_movable = (movable_scenes.find(scene_l) != -1) or (movable_scenes.find(scene_r) != -1)
+	eye_offset = Vector2()
 
 func change_scene(scene: PackedScene) -> void:
 	clear_eyes()
@@ -48,7 +62,20 @@ func change_scene(scene: PackedScene) -> void:
 	current_movable = movable_scenes.find(scene) != -1
 	eye_offset = Vector2()
 
-func _process(delta: float) -> void:
+func change_scene_key(key: Key) -> void:
+	print("change_scene_key:" + str(key))
+	var scene = key_eye_map.get(key)
+	if scene != null:
+		print("change_scene_key: basic!")
+		change_scene(scene)
+		return
+
+	scene = key_l_eye_map.get(key)
+	if scene != null:
+		print("change_scene_key: NOT basic!")
+		change_scene_diff(scene, key_r_eye_map.get(key))
+
+func _process(_delta: float) -> void:
 				
 	eye_offset *= eye_move_dampening
 	left_eye.position = lerp(left_eye.position, left_eye_position + eye_offset, eye_move_lerp)
@@ -92,22 +119,22 @@ func _input(event: InputEvent) -> void:
 		current_index -= 1
 		while current_index < 0:
 			current_index += ordered_keys.size()
-		change_scene(key_eye_map.get(ordered_keys[current_index]))
+		change_scene_key(ordered_keys[current_index])
 		return
 		
 	if Input.is_action_just_pressed("next_eye"):
 		current_index += 1
 		current_index %= ordered_keys.size()
-		change_scene(key_eye_map.get(ordered_keys[current_index]))
+		change_scene_key(ordered_keys[current_index])
 		return
 		
-	for key in key_eye_map.keys():
+	for key in ALL_KEYS:
 		if key == last_key:
 			continue
 		if Input.is_key_pressed(key):
 			print("Key pressed: " + str(key))
 			last_key = key
-			change_scene(key_eye_map.get(key))
+			change_scene_key(key)
 			return
 
 func _ready():
