@@ -24,7 +24,6 @@ var last_key = null
 @export var mirrored_scenes: Array[PackedScene]
 @export var movable_scenes: Array[PackedScene]
 
-@onready var ordered_keys: Array[Key] = key_eye_map.keys()
 var current_index: int = 0
 
 var current_movable: bool = false
@@ -118,14 +117,14 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("previous_eye"):
 		current_index -= 1
 		while current_index < 0:
-			current_index += ordered_keys.size()
-		change_scene_key(ordered_keys[current_index])
+			current_index += ALL_KEYS.size()
+		change_scene_key(ALL_KEYS[current_index])
 		return
 		
 	if Input.is_action_just_pressed("next_eye"):
 		current_index += 1
-		current_index %= ordered_keys.size()
-		change_scene_key(ordered_keys[current_index])
+		current_index %= ALL_KEYS.size()
+		change_scene_key(ALL_KEYS[current_index])
 		return
 		
 	for key in ALL_KEYS:
